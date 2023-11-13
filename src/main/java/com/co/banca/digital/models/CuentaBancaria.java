@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)                                   //Herencia, Esto nos indica que todas las clases de una jerarquia se asignaran a una sola tabla.
+@DiscriminatorColumn(name = "TIPO", length = 4)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
