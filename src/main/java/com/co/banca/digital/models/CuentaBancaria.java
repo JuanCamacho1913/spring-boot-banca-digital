@@ -29,7 +29,7 @@ public class CuentaBancaria {
     @ManyToOne
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "cuentaBancaria")
+    @OneToMany(mappedBy = "cuentaBancaria",fetch = FetchType.LAZY)                        //fetch = FetchType.LAZY Quiere decir que cuando yo llame CuentaBancaria me va a traer esta lista de OperacionBancaria solo si yo lo llamo, si no, no la llama.
     private List<OperacionCuenta> operacionesCuenta;
 
 }
