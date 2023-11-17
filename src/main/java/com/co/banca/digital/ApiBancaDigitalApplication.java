@@ -1,17 +1,13 @@
 package com.co.banca.digital;
 
-import com.co.banca.digital.enums.EstadoCuenta;
-import com.co.banca.digital.enums.TipoOperacion;
+import com.co.banca.digital.dtos.ClienteDTO;
 import com.co.banca.digital.models.*;
-import com.co.banca.digital.repositories.ClienteRepository;
-import com.co.banca.digital.repositories.CuentaBancariaRepository;
-import com.co.banca.digital.repositories.OperacionCuentaRepository;
 import com.co.banca.digital.services.BancoService;
 import com.co.banca.digital.services.CuentaBancariaService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+
 
 import java.util.Date;
 import java.util.List;
@@ -34,11 +30,11 @@ public class ApiBancaDigitalApplication {
     }
 
     //Insertando datos de prueba.
-    @Bean
+    //@Bean
     CommandLineRunner start(CuentaBancariaService cuentaBancariaService) {
         return args -> {
             Stream.of("Julian", "Samuel", "Juan", "Jhonier").forEach(nombre -> {
-                Cliente cliente = new Cliente();
+                ClienteDTO cliente = new ClienteDTO();
                 cliente.setNombre(nombre);
                 cliente.setGmail(nombre + "@gmail.com");
                 cuentaBancariaService.saveCliente(cliente);

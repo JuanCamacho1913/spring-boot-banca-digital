@@ -1,9 +1,11 @@
 package com.co.banca.digital.services.impl;
 
+import com.co.banca.digital.dtos.ClienteDTO;
 import com.co.banca.digital.enums.TipoOperacion;
 import com.co.banca.digital.exceptions.BalanceInsuficienteException;
 import com.co.banca.digital.exceptions.ClienteNotFoundException;
 import com.co.banca.digital.exceptions.CuentaBancariaNotFoundException;
+import com.co.banca.digital.mappers.CuentaBancariaMapperImpl;
 import com.co.banca.digital.models.*;
 import com.co.banca.digital.repositories.ClienteRepository;
 import com.co.banca.digital.repositories.CuentaBancariaRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,11 +36,35 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
     @Autowired
     private OperacionCuentaRepository operacionCuentaRepository;
 
+    @Autowired
+    private CuentaBancariaMapperImpl cuentaBancariaMapper;
+
     @Override
-    public Cliente saveCliente(Cliente cliente) {
+    public ClienteDTO saveCliente(ClienteDTO clienteDTO) {
         log.info("Guardando un nuevo cliente");
+        Cliente cliente = cuentaBancariaMapper.mapearDeClienteDTO(clienteDTO);
         Cliente clienteBBDD = clienteRepository.save(cliente);
-        return clienteBBDD;
+        return cuentaBancariaMapper.mapearDeCliente(clienteBBDD);
+    }
+
+    @Override
+    public ClienteDTO getCliente(Long clienteId) throws ClienteNotFoundException {
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado"));
+        return cuentaBancariaMapper.mapearDeCliente(cliente);
+    }
+
+    @Override
+    public ClienteDTO updateCliente(ClienteDTO clienteDTO) {
+        log.info("Actualizando cliente");
+        Cliente cliente = cuentaBancariaMapper.mapearDeClienteDTO(clienteDTO);
+        Cliente clienteBBDD = clienteRepository.save(cliente);
+        return cuentaBancariaMapper.mapearDeCliente(clienteBBDD);
+    }
+
+    @Override
+    public void deleteCliente(Long clienteId) {
+        clienteRepository.deleteById(clienteId);
     }
 
     @Override
@@ -79,8 +106,12 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
     }
 
     @Override
-    public List<Cliente> listClientes() {
-        return clienteRepository.findAll();
+    public List<ClienteDTO> listClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<ClienteDTO> clienteDTOS = clientes.stream()
+                .map(cliente -> cuentaBancariaMapper.mapearDeCliente(cliente))
+                .collect(Collectors.toList());
+        return clienteDTOS;
     }
 
     @Override
