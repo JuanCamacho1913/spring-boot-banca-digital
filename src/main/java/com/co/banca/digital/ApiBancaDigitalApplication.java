@@ -1,12 +1,16 @@
 package com.co.banca.digital;
 
 import com.co.banca.digital.dtos.ClienteDTO;
+import com.co.banca.digital.dtos.CuentaActualDTO;
+import com.co.banca.digital.dtos.CuentaAhorroDTO;
+import com.co.banca.digital.dtos.CuentaBancariaDTO;
 import com.co.banca.digital.models.*;
 import com.co.banca.digital.services.BancoService;
 import com.co.banca.digital.services.CuentaBancariaService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 
 import java.util.Date;
@@ -30,7 +34,7 @@ public class ApiBancaDigitalApplication {
     }
 
     //Insertando datos de prueba.
-    //@Bean
+    @Bean
     CommandLineRunner start(CuentaBancariaService cuentaBancariaService) {
         return args -> {
             Stream.of("Julian", "Samuel", "Juan", "Jhonier").forEach(nombre -> {
@@ -45,12 +49,20 @@ public class ApiBancaDigitalApplication {
                     cuentaBancariaService.saveCuentaBancariaActual(Math.random() * 90000, 9000, cliente.getId());
                     cuentaBancariaService.saveCuentaBancariaAhorro(120000, 5.5, cliente.getId());
 
-                    List<CuentaBancaria> cuentaBancarias = cuentaBancariaService.listCuentasBancarias();
+                    List<CuentaBancariaDTO> cuentaBancarias = cuentaBancariaService.listCuentasBancarias();
 
-                    for (CuentaBancaria cuentaBancaria : cuentaBancarias) {
+                    for (CuentaBancariaDTO cuentaBancaria : cuentaBancarias) {
                         for (int i = 0; i < 10; i++) {
-                            cuentaBancariaService.credit(cuentaBancaria.getId(), 10000 + Math.random() * 120000, "Credito");
-                            cuentaBancariaService.debit(cuentaBancaria.getId(), 1000 + Math.random() * 9000, "Debito");
+                            String cuentaId;
+
+                            if (cuentaBancaria instanceof CuentaAhorroDTO){
+                                cuentaId = ((CuentaAhorroDTO) cuentaBancaria).getId();
+                            }else {
+                                cuentaId = ((CuentaActualDTO) cuentaBancaria).getId();
+                            }
+
+                            cuentaBancariaService.credit(cuentaId, 10000 + Math.random() * 120000, "Credito");
+                            cuentaBancariaService.debit(cuentaId, 1000 + Math.random() * 9000, "Debito");
                         }
                     }
                 } catch (Exception e) {
