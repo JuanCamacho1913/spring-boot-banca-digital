@@ -34,7 +34,7 @@ public class ApiBancaDigitalApplication {
     }
 
     //Insertando datos de prueba.
-    @Bean
+    //@Bean
     CommandLineRunner start(CuentaBancariaService cuentaBancariaService) {
         return args -> {
             Stream.of("Julian", "Samuel", "Juan", "Jhonier").forEach(nombre -> {

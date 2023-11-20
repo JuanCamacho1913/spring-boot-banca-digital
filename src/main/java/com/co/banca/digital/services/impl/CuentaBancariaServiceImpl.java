@@ -1,9 +1,6 @@
 package com.co.banca.digital.services.impl;
 
-import com.co.banca.digital.dtos.ClienteDTO;
-import com.co.banca.digital.dtos.CuentaActualDTO;
-import com.co.banca.digital.dtos.CuentaAhorroDTO;
-import com.co.banca.digital.dtos.CuentaBancariaDTO;
+import com.co.banca.digital.dtos.*;
 import com.co.banca.digital.enums.TipoOperacion;
 import com.co.banca.digital.exceptions.BalanceInsuficienteException;
 import com.co.banca.digital.exceptions.ClienteNotFoundException;
@@ -186,5 +183,13 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
             }
         }).collect(Collectors.toList());
         return cuentasBancariasDTOS;
+    }
+
+    @Override
+    public List<OperacionCuentaDTO> listHistorialDeCuentas(String cuentaId) {
+        List<OperacionCuenta> operacionesCuenta = operacionCuentaRepository.findByCuentaBancariaId(cuentaId);
+        return operacionesCuenta.stream().map(operacionCuenta ->
+                cuentaBancariaMapper.mapearDeOperacionCuenta(operacionCuenta)
+        ).collect(Collectors.toList());
     }
 }

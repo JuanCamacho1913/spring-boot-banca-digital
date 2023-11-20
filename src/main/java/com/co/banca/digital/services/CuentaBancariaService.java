@@ -1,9 +1,6 @@
 package com.co.banca.digital.services;
 
-import com.co.banca.digital.dtos.ClienteDTO;
-import com.co.banca.digital.dtos.CuentaActualDTO;
-import com.co.banca.digital.dtos.CuentaAhorroDTO;
-import com.co.banca.digital.dtos.CuentaBancariaDTO;
+import com.co.banca.digital.dtos.*;
 import com.co.banca.digital.exceptions.BalanceInsuficienteException;
 import com.co.banca.digital.exceptions.ClienteNotFoundException;
 import com.co.banca.digital.exceptions.CuentaBancariaNotFoundException;
@@ -36,4 +33,6 @@ public interface CuentaBancariaService {
     void transfer(String cuentaIdPropietario, String cuentaIdDestinatario, double monto) throws CuentaBancariaNotFoundException, BalanceInsuficienteException;
 
     List<CuentaBancariaDTO> listCuentasBancarias();
+
+    List<OperacionCuentaDTO> listHistorialDeCuentas(String cuentaId);
 }
