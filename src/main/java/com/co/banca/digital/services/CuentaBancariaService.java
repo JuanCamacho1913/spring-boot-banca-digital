@@ -16,6 +16,8 @@ public interface CuentaBancariaService {
 
     ClienteDTO updateCliente(ClienteDTO clienteDTO);
 
+    List<ClienteDTO> searchClientes(String keyword);
+
     void deleteCliente(Long clienteId);
 
     CuentaActualDTO saveCuentaBancariaActual(double balanceInicial, double sobregiro, Long clienteId) throws ClienteNotFoundException;

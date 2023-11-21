@@ -26,19 +26,24 @@ public class ClienteController {
     }
 
     @PostMapping("")
-    public ClienteDTO crearCliente(@RequestBody ClienteDTO clienteDTO){
+    public ClienteDTO crearCliente(@RequestBody ClienteDTO clienteDTO) {
         return cuentaBancariaService.saveCliente(clienteDTO);
     }
 
     @PutMapping("/{clienteId}")
-    public ClienteDTO actualizarCliente(@PathVariable Long clienteId ,@RequestBody ClienteDTO clienteDTO){
+    public ClienteDTO actualizarCliente(@PathVariable Long clienteId, @RequestBody ClienteDTO clienteDTO) {
         clienteDTO.setId(clienteId);
         return cuentaBancariaService.updateCliente(clienteDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarCliente(@PathVariable Long id){
+    public void eliminarCliente(@PathVariable Long id) {
         cuentaBancariaService.deleteCliente(id);
+    }
+
+    @GetMapping("/search")
+    public List<ClienteDTO> buscarClientes(@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+        return cuentaBancariaService.searchClientes("%" + keyword + "%");
     }
 
 }
