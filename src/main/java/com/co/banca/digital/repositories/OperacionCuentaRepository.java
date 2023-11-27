@@ -13,5 +13,7 @@ public interface OperacionCuentaRepository extends JpaRepository<OperacionCuenta
 
     List<OperacionCuenta> findByCuentaBancariaId(String cuentaId);                                      //Vamos a buscar todas las operaciones que hay en una cuenta bancaria.
 
-    Page<OperacionCuenta> findByCuentaBancariaId(String cuentaId, Pageable pageable);
+    //Page<OperacionCuenta> findByCuentaBancariaId(String cuentaId, Pageable pageable);
+
+    Page<OperacionCuenta> findByCuentaBancariaIdOrderByFechaOperacionDesc(String cuentaId, Pageable pageable);
 }
